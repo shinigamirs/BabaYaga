@@ -3,6 +3,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from drf_yasg.utils import swagger_auto_schema
+
 from library.models import *
 from library.serializers import *
 from lib.decorator import *
@@ -20,13 +22,14 @@ class BookDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class BookAddIsbn(APIView):
 
+    @swagger_auto_schema(request_body=BookSerializer)
     @rest_process_exception
     def post(self, request):
         data = request.data
         try:
-
+            import pdb
+            pdb.set_trace()
             isbn_no = data.get("isbn", "")
-            isbn_no = isbnlib.to_isbn13(isbn_no)
             if isbnlib.is_isbn13(isbn_no):
                 book_data = isbnlib.meta(isbn_no)
             else:
@@ -38,7 +41,7 @@ class BookAddIsbn(APIView):
 
         try:
             book = Book.objects.get(isbn=book_data.get("ISBN-13"))
-            book.count = book.count + 1
+            book.total_count = book.total_count + 1
             book.available_count = book.available_count + 1
             book.save()
             return Response(status=status.HTTP_201_CREATED)
@@ -74,7 +77,7 @@ class BookAdd(APIView):
         try:
             try:
                 book = Book.objects.get(isbn=data.get("isbn"))
-                book.count = book.count + 1
+                book.total_count = book.total_count + 1
                 book.available_count = book.available_count + 1
                 book.save()
                 return Response(status=status.HTTP_201_CREATED)

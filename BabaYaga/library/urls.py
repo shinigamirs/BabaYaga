@@ -1,10 +1,10 @@
-from django.conf.urls import *
+from django.urls import path
 
 from library.rest import *
 
 urlpatterns = [
-    url(r'^rest/book_add/$', BookAddIsbn.as_view()),
-    url(r'^rest/book/$', BookAdd.as_view()),
-    url(r'^rest/list/$', BookList.as_view()),
-    url(r'^rest/add-group/(?P<id>[\d]+)/$', BookDetail.as_view()),
+    path('rest/book_add/', BookAddIsbn.as_view(), name='book-add-isbn'),
+    path('rest/book/', BookAdd.as_view(), name='book-add-man'),
+    path('rest/list/', BookList.as_view(), name='book-list'),
+    path('rest/book/detail/<int:id>/', BookDetail.as_view(), name='book-detail'),
 ]
