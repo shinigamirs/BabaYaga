@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import include, url, static
+admin.autodiscover()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'^library/', include('library.urls')),
 ]
