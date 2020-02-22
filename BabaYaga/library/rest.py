@@ -11,13 +11,14 @@ from lib.decorator import *
 import isbnlib
 
 class BookList(generics.ListAPIView):
-    queryset = Book.objects.prefetch_related('author').all()
+    queryset = Book.objects.all()
     serializer_class = BookSerializer
 
 
 class BookDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Book.objects.prefetch_related('author').all()
+    queryset = Book.objects.all()
     serializer_class = BookSerializer
+    lookup_field = ('id')
 
 
 class BookAddIsbn(APIView):
@@ -27,8 +28,6 @@ class BookAddIsbn(APIView):
     def post(self, request):
         data = request.data
         try:
-            import pdb
-            pdb.set_trace()
             isbn_no = data.get("isbn", "")
             if isbnlib.is_isbn13(isbn_no):
                 book_data = isbnlib.meta(isbn_no)
@@ -58,12 +57,14 @@ class BookAddIsbn(APIView):
         for name in authors:
             try:
                 author = Author.objects.get(name=name)
+                author.save()
                 author.book.add(book)
                 author.save()
 
             except Exception:
                 author = Author()
                 author.name = name
+                author.save()
                 author.book.add(book)
                 author.save()
 
@@ -95,12 +96,14 @@ class BookAdd(APIView):
 
                 try:
                     author = Author.objects.get(name=name)
+                    author.save()
                     author.book.add(book)
                     author.save()
 
                 except Exception:
                     author = Author()
                     author.name = data.get("author")
+                    author.save()
                     author.book.add(book)
                     author.save()
 
