@@ -5,3 +5,11 @@ django_filter
 drf-yasg
 django-debug-toolbar
 django-formtools
+docutils
+pygments
+kivy
+buttons
+social-auth-app-django
+psycopg2
+python-ldap
+django-auth-ldap
