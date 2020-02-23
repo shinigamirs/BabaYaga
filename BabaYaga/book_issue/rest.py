@@ -36,6 +36,9 @@ class IssueBook(APIView):
             issue.profile = profile
             issue.book = book
             issue.save()
+            book.available_count -= 1
+            book.save()
+
         except BookIssue.DoesNotExist:
             raise Http404("BookIssue : Book not found")
 
@@ -66,8 +69,6 @@ class ReturnBook(APIView):
 
     def delete(self,request):
         try:
-            import pdb
-            pdb.set_trace()
             data = request.data
             isbn = data['isbn']
             emp_id = data['emp_id']
@@ -76,8 +77,8 @@ class ReturnBook(APIView):
             book_issued = profile.books_issue.get(book=book)
             update_fine_amount(profile,book_issued)
             book_issued.delete()
-            book_issued.save()
             book.available_count += 1
+            book.save()
 
         except BookIssue.DoesNotExist:
             raise Http404("BookIssue : Book not found")
