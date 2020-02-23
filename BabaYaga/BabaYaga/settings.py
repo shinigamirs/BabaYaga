@@ -25,7 +25,7 @@ SECRET_KEY = 'p8^84!$^td5@uaer8!xc7opb%-a(i0ylwf*_q-!6ph+wb$gm__'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['babayaga.esec.coriolis.in', '172.20.4.115', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['babayaga.esec.coriolis.in',  '127.0.0.1', 'localhost']
 
 
 # Application definition
