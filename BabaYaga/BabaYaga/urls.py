@@ -21,6 +21,7 @@ from django.conf.urls import include, url, static
 from django.contrib import admin
 from django.urls import path, include
 admin.autodiscover()
+from BabaYaga.rest import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +29,8 @@ urlpatterns = [
     url(r'^library/', include('library.urls')),
     url(r'^book_issue/', include('book_issue.urls')),
     url(r'^profile/', include('userprofile.urls')),
+    path('/ldap_set/', LDAPDataSet.as_view(), namespace="ldap-set"),
+
 ]
 
 schema_view = get_schema_view(
