@@ -10,14 +10,13 @@ import subprocess
 from BabaYaga.ldap_config import *
 
 class LDAPDataSet(APIView):
-    permission_classes = (IsAdminUser,)
 
     @rest_process_exception
     def post(self, request):
         data = request.data
         try:
-            ldap_file_name = 'colama/ldap.json'
-            md5_file_name = 'colama/md5.txt'
+            ldap_file_name = 'BabaYaga/ldap.json'
+            md5_file_name = 'BabaYaga/md5.txt'
 
             if check_ldap_connection(data):
                 with open(ldap_file_name, 'w') as outfile:
@@ -26,7 +25,7 @@ class LDAPDataSet(APIView):
                 md5_hash = md5_generator(ldap_file_name)
                 with open(md5_file_name, 'w') as outfile:
                     outfile.write(md5_hash)
-                subprocess.call('bash colama/restart.sh', shell=True)
+                subprocess.call('bash BabaYaga/restart.sh', shell=True)
                 return Response(status=status.HTTP_201_CREATED)
             else:
                 error = {'error' : 'LDAP connectivity error'}
