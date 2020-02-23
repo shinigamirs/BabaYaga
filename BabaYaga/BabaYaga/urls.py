@@ -18,6 +18,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.conf.urls import include, url, static
 
+from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.urls import path, include
 admin.autodiscover()
@@ -30,6 +31,8 @@ urlpatterns = [
     url(r'^book_issue/', include('book_issue.urls')),
     url(r'^profile/', include('userprofile.urls')),
     path('ldap_set/', LDAPDataSet.as_view()),
+    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^logout/$', auth_views.logout, name='logout'),
 
 ]
 

@@ -134,6 +134,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend"
+]
 
 import ldap
 from django_auth_ldap.config import LDAPSearch
