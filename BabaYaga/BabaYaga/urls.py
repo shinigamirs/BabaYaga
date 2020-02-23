@@ -16,6 +16,7 @@ Including another URLconf
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.conf.urls import include, url, static
 
 from django.contrib import admin
 from django.urls import path, include
@@ -24,6 +25,9 @@ admin.autodiscover()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('library/', include('library.urls')),
+    url(r'^library/', include('library.urls')),
+    url(r'^book_issue/', include('book_issue.urls')),
+    url(r'^profile/', include('userprofile.urls')),
 ]
 
 schema_view = get_schema_view(
