@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^library/', include('library.urls')),
     url(r'^book_issue/', include('book_issue.urls')),
     url(r'^profile/', include('userprofile.urls')),
-    path('/ldap_set/', LDAPDataSet.as_view(), namespace="ldap-set"),
+    path('ldap_set/', LDAPDataSet.as_view()),
 
 ]
 
