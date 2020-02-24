@@ -13,8 +13,6 @@ from django.http import Http404
 class ProfileDetail(APIView):
 
     def get(self, request, emp_id=None):
-        # import pdb
-        # pdb.set_trace()
         try:
             profile = UserProfile.objects.get(employee_id=emp_id)
         except UserProfile.DoesNotExist:

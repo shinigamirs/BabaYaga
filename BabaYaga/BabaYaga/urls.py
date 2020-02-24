@@ -30,9 +30,7 @@ urlpatterns = [
     url(r'^library/', include('library.urls')),
     url(r'^book_issue/', include('book_issue.urls')),
     url(r'^profile/', include('userprofile.urls')),
-    path('ldap_set/', LDAPDataSet.as_view()),
-    # url(r'^login/$', auth_views.login, name='login'),
-    # url(r'^logout/$', auth_views.logout, name='logout'),
+    path('', include('social_django.urls', namespace='social')),
 
 ]
 

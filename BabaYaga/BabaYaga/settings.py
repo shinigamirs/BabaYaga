@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'book_issue',
     'userprofile',
+    'social_django',
 ]
 
 SWAGGER_SETTINGS = {
@@ -53,6 +54,8 @@ SWAGGER_SETTINGS = {
         },
     },
 }
+
+from BabaYaga.local_settings import *
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -76,6 +79,8 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -88,12 +93,6 @@ WSGI_APPLICATION = 'BabaYaga.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 
 # Password validation
@@ -128,40 +127,17 @@ USE_L10N = True
 
 USE_TZ = True
 
+SOCIAL_AUTH_LOGIN_URL = '/'
+
+LOGIN_URL = '/auth/login/google-oauth2/'
+
+LOGIN_REDIRECT_URL = '/profile/home'
+
+LOGOUT_REDIRECT_URL = '/'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend"
-]
-
-import ldap
-from django_auth_ldap.config import LDAPSearch
-from .ldap_config import *
-ldap_file_name = 'BabaYaga/ldap.json'
-md5_file_name = 'BabaYaga/md5.txt'
-
-if os.path.exists(ldap_file_name):
-    import json
-    try:
-        with open(ldap_file_name) as ldap_json:
-            data = json.load(ldap_json)
-
-        original_md5 = open(md5_file_name).read()
-        returned_md5 = md5_generator(ldap_file_name)
-
-        if original_md5 == returned_md5 and check_ldap_connection(data):
-            AUTHENTICATION_BACKENDS.append("django_auth_ldap.backend.LDAPBackend")
-            AUTH_LDAP_SERVER_URI = data.get("ldap_server_uri")
-            AUTH_LDAP_BIND_DN = data.get("ldap_bind_dn")
-            AUTH_LDAP_BIND_PASSWORD = data.get("ldap_bind_password")
-            ldap_search = data.get("ldap_search")
-            AUTH_LDAP_USER_SEARCH = LDAPSearch(
-                ldap_search , ldap.SCOPE_SUBTREE, "(uid=%(user)s)"
-            )
-    except Exception:
-        pass
 

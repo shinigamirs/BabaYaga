@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid" style="margin-top: 30px;">
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="card">
+                <div class="card-header">Books Issued by you from Coriolis library</div>
+             
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Book name</th>
+                            <th>Issue Date</th>
+                            <th>Return Date</th>
+                            <th>Current Surcharge</th>
+                        </tr>
+                    </thead>
+             
+                    <tbody>
+                    {% for book in books %}
+                        <tr>
+                            <td>{{ book.title }}</td>
+                            <td>{{ book.issue_date }}</td>
+                            <td>{{ book.return_date }}</td>
+                            <td><i class="fa fa-inr"></i> {{book.fine_amount}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+             
+                <div class="card-footer">
+                    <small>*Books strictly have to be returned within 10 days of the issue date, If the duration exceeds the limit, Rs10/- per day surcharge would be levied.  </small>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <div class="card" >
+                
+                <div class="card-body">
+                  <h4 class="card-title" style="text-align: center;">Fine Outstanding</h4>
+                  <p class="card-text" style="text-align: center; font-size: xx-large"><i class="fa fa-inr">20</i></p>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>
