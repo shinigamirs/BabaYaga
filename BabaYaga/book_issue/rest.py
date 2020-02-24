@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import generics, status
 
 from datetime import datetime, timedelta
+from django.contrib.auth.models import User
 
 from library.models import *
 from book_issue.models import *
@@ -24,8 +25,19 @@ class IssueBook(APIView):
                 }
                 return Response(content)
                 #add status to above line
+            try:
+                profile = UserProfile.objects.get(employee_id=emp_id)
+            except UserProfile.DoesNotExist:
+                email = request.data["email"]
+                username = email.split("@")[0]
+                user = User()
+                user.username = username
+                user.save()
+                profile = UserProfile()
+                profile.user = user
+                profile.employee_id = emp_id
+                profile.save()
 
-            profile = UserProfile.objects.get(employee_id=emp_id)
             books_issue = profile.books_issue.filter(book=book)
             if books_issue.count() >= 1:
                 content = {
@@ -42,8 +54,6 @@ class IssueBook(APIView):
         except BookIssue.DoesNotExist:
             raise Http404("BookIssue : Book not found")
 
-        except UserProfile.DoesNotExist:
-            raise Http404("Userprofile : profile not found")
 
         except Exception as e:
             raise e

@@ -65,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'BabaYaga.urls'
@@ -131,9 +132,9 @@ SOCIAL_AUTH_LOGIN_URL = '/'
 
 LOGIN_URL = '/auth/login/google-oauth2/'
 
-LOGIN_REDIRECT_URL = '/profile/home'
+LOGIN_REDIRECT_URL = '/home'
 
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = ''
 
 MEDIA_URL = '/media/'
 
