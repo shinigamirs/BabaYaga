@@ -22,15 +22,15 @@ from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.urls import path, include
 admin.autodiscover()
-from BabaYaga.rest import *
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
     path('library/', include('library.urls')),
     url(r'^library/', include('library.urls')),
     url(r'^book_issue/', include('book_issue.urls')),
-    url(r'^profile/', include('userprofile.urls')),
-    path('', include('social_django.urls', namespace='social')),
+    url(r'', include('userprofile.urls')),
+    path('social', include('social_django.urls', namespace='social')),
 
 ]
 

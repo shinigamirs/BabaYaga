@@ -39,6 +39,7 @@ class BookAddIsbn(APIView):
                   "Use '/library/rest/book/' ")
 
         try:
+            print(book_data)
             book = Book.objects.get(isbn=book_data.get("ISBN-13"))
             book.total_count = book.total_count + 1
             book.available_count = book.available_count + 1
