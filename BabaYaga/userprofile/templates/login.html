@@ -1,3 +1,4 @@
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -5,30 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
-    <!-- <link rel="stylesheet" href="{{url_for('static', filename='styles1.css')}}"> -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles1.css">
+    <link rel="stylesheet" href="{% static 'styles1.css' %}">
    
     <title>Coriolis Library Management System</title>
 </head>
-<body>          
-        <!-- <section class="pricing py-5">
-                <div class="container">
-                  <main role="main" class="container">
-                    <div class="row">
-                      <div class=" flash-message col-md-12">
-                        
-                        <div class="alert alert-{{ category }}">
-                          <strong></strong>
-                        </div>
-                        
-                      </div>
-            
-                    </div>
-                  </main>
-                </div>
-              </section> -->
+<body background="{% static 'hom.png' %}">
+
         <div class="google-parent">
             <div class="google" >
                 <div class="titletext">Coriolis Library Management System</div>
