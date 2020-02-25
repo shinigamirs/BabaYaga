@@ -21,7 +21,7 @@ class IssueBook(APIView):
             emp_id = data['emp_id']
             try:
                 book = Book.objects.get(isbn=isbn)
-            except BookIssue.DoesNotExist:
+            except Book.DoesNotExist:
                 book = BookAddIsbn().post(request, isbn)
                 #add status to above line
             try:
@@ -80,7 +80,7 @@ class ReturnBook(APIView):
             emp_id = data['emp_id']
             try:
                 book=Book.objects.get(isbn=isbn)
-            except BookIssue.DoesNotExist:
+            except Book.DoesNotExist:
                 raise Http404("BookIssue : Book not found")
             try:
                 profile = UserProfile.objects.get(employee_id=emp_id)
