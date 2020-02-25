@@ -25,10 +25,13 @@ class BookAddIsbn(APIView):
 
     @swagger_auto_schema(request_body=BookSerializer)
     @rest_process_exception
-    def post(self, request):
+    def post(self, request, isbn=None):
         data = request.data
         try:
-            isbn_no = data.get("isbn", "")
+            if isbn:
+                isbn_no = isbn
+            else:
+                isbn_no = data["isbn"]
             if isbnlib.is_isbn13(isbn_no):
                 book_data = isbnlib.meta(isbn_no)
             else:
@@ -68,7 +71,8 @@ class BookAddIsbn(APIView):
                 author.save()
                 author.book.add(book)
                 author.save()
-
+        if isbn:
+            return
         return Response(status=status.HTTP_201_CREATED)
 
 class BookAdd(APIView):
@@ -107,6 +111,26 @@ class BookAdd(APIView):
                     author.save()
                     author.book.add(book)
                     author.save()
+
+        except Exception as e:
+            raise e
+
+class BulkBookAddIsbn(APIView):
+
+    @rest_process_exception
+    def post(self, request):
+        try:
+            fail_list = []
+            list = request.data.get("isbn_list")
+            for isbn in list:
+                api = BookAddIsbn()
+                try:
+                    api.post(request,isbn)
+                except Exception:
+                    fail_list.append(isbn)
+
+            result = {"fail_list" : fail_list}
+            return Response(result, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             raise e

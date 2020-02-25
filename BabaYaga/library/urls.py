@@ -5,6 +5,7 @@ from library.views import *
 
 urlpatterns = [
     path('rest/book_add/', BookAddIsbn.as_view()),
+    path('rest/bulk_book_add/', BulkBookAddIsbn.as_view()),
     path('rest/book/', BookAdd.as_view()),
     path('rest/list/', BookList.as_view()),
     path('rest/book/detail/<int:id>/', BookDetail.as_view()),
