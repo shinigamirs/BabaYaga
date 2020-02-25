@@ -9,7 +9,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     fine = serializers.SerializerMethodField()
     class Meta:
         model = UserProfile
-        fields = ('employee_id', 'email', 'fine', 'books_issue')
+        fields = ('employee_id', 'fine', 'books_issue')
 
     def get_fine(self, profile):
         # import pdb

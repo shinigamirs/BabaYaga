@@ -69,11 +69,14 @@ def update_fine_amount(profile,book_issued):
     book_fine = exceeded_days*10
     profile.fine_amount += book_fine
     profile.save()
+    return book_fine
 
 
 class ReturnBook(APIView):
 
     def delete(self,request):
+        # import pdb
+        # pdb.set_trace()
         try:
             data = request.data
             isbn = data['isbn']
@@ -81,13 +84,35 @@ class ReturnBook(APIView):
             try:
                 book=Book.objects.get(isbn=isbn)
             except Book.DoesNotExist:
-                raise Http404("BookIssue : Book not found")
+                book = BookAddIsbn().post(request, isbn)
+                content = {
+                    'Book': book.title, 'result': 'You have not issued this book yet'
+                }
+                return Response(content, status=status.HTTP_405_METHOD_NOT_ALLOWED)
             try:
                 profile = UserProfile.objects.get(employee_id=emp_id)
             except UserProfile.DoesNotExist:
-                raise Http404("Userprofile : profile not found")
-            book_issued = profile.books_issue.get(book=book)
-            update_fine_amount(profile,book_issued)
+                email = request.data["email"]
+                username = email.split("@")[0]
+                user = User()
+                user.username = username
+                user.save()
+                profile = UserProfile()
+                profile.user = user
+                profile.employee_id = emp_id
+                profile.save()
+                content = {
+                    'Book': book.title, 'result': 'You have not issued this book yet'
+                }
+                return Response(content, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            try:
+                book_issued = profile.books_issue.get(book=book)
+            except BookIssue.DoesNotExist:
+                content = {
+                    'Book': book.title, 'result': 'You have not issued this book yet'
+                }
+                return Response(content, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            book_fine = update_fine_amount(profile,book_issued)
             book_issued.delete()
             book.available_count += 1
             book.save()
@@ -96,9 +121,9 @@ class ReturnBook(APIView):
             raise e
 
         content = {
-            'Book': book.title, 'result': 'Returned successfully'
+            'Book': book.title, 'Book_Fine':book_fine, 'result': 'Returned successfully'
         }
-        return Response(content, status=status.HTTP_204_NO_CONTENT)
+        return Response(content, status=status.HTTP_200_OK)
 
 
 
