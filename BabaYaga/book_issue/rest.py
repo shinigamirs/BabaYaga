@@ -42,7 +42,7 @@ class IssueBook(APIView):
                 content = {
                     'Book': book.title, 'result': 'You already have one copy of this book'
                 }
-                return Response(content)
+                return Response(content,status=status.HTTP_405_METHOD_NOT_ALLOWED)
             issue = BookIssue()
             issue.profile = profile
             issue.book = book
@@ -78,19 +78,19 @@ class ReturnBook(APIView):
             data = request.data
             isbn = data['isbn']
             emp_id = data['emp_id']
-            book=Book.objects.get(isbn=isbn)
-            profile = UserProfile.objects.get(employee_id=emp_id)
+            try:
+                book=Book.objects.get(isbn=isbn)
+            except BookIssue.DoesNotExist:
+                raise Http404("BookIssue : Book not found")
+            try:
+                profile = UserProfile.objects.get(employee_id=emp_id)
+            except UserProfile.DoesNotExist:
+                raise Http404("Userprofile : profile not found")
             book_issued = profile.books_issue.get(book=book)
             update_fine_amount(profile,book_issued)
             book_issued.delete()
             book.available_count += 1
             book.save()
-
-        except BookIssue.DoesNotExist:
-            raise Http404("BookIssue : Book not found")
-
-        except UserProfile.DoesNotExist:
-            raise Http404("Userprofile : profile not found")
 
         except Exception as e:
             raise e
