@@ -13,7 +13,6 @@ html{
 body{
    
     height: 100%;
-
     font-family: Arial, Helvetica, sans-serif;
     
 }
@@ -100,11 +99,6 @@ section{
     .google-parent{
         width: 90%;
     }
-}
-body {
-  background: #fafafa;
-  color: #333333;
-  margin-top: 5rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
