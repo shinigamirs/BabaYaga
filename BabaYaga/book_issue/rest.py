@@ -10,6 +10,7 @@ from book_issue.models import *
 from book_issue.serializers import *
 from django.http import Http404
 from userprofile import *
+from library.rest import BookAddIsbn
 
 class IssueBook(APIView):
 
@@ -18,12 +19,10 @@ class IssueBook(APIView):
             data = request.data
             isbn = data['isbn']
             emp_id = data['emp_id']
-            book=Book.objects.get(isbn=isbn)
-            if book.available_count == 0:
-                content = {
-                    'Book': book.title, 'result': 'Not available'
-                }
-                return Response(content)
+            try:
+                book = Book.objects.get(isbn=isbn)
+            except BookIssue.DoesNotExist:
+                book = BookAddIsbn().post(request, isbn)
                 #add status to above line
             try:
                 profile = UserProfile.objects.get(employee_id=emp_id)
@@ -50,9 +49,6 @@ class IssueBook(APIView):
             issue.save()
             book.available_count -= 1
             book.save()
-
-        except BookIssue.DoesNotExist:
-            raise Http404("BookIssue : Book not found")
 
 
         except Exception as e:

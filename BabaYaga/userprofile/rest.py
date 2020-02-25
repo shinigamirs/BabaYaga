@@ -22,14 +22,14 @@ class ProfileDetail(APIView):
         return Response(serializer.data)
 
 
-class AddProfile(APIView):
-    def post(self, request,emp_id):
-
-        try:
-            profile = UserProfile()
-            profile.employee_id=emp_id
-            profile.username=emp_id
-            profile.save()
-        except Exception as e:
-            raise e
-        return Response(status=status.HTTP_201_CREATED)
+# class AddProfile(APIView):
+#     def post(self, request,emp_id):
+#
+#         try:
+#             profile = UserProfile()
+#             profile.employee_id=emp_id
+#             profile.username=emp_id
+#             profile.save()
+#         except Exception as e:
+#             raise e
+#         return Response(status=status.HTTP_201_CREATED)

@@ -72,7 +72,7 @@ class BookAddIsbn(APIView):
                 author.book.add(book)
                 author.save()
         if isbn:
-            return
+            return book
         return Response(status=status.HTTP_201_CREATED)
 
 class BookAdd(APIView):
@@ -125,7 +125,7 @@ class BulkBookAddIsbn(APIView):
             for isbn in list:
                 api = BookAddIsbn()
                 try:
-                    api.post(request,isbn)
+                    b = api.post(request,isbn)
                 except Exception:
                     fail_list.append(isbn)
 
