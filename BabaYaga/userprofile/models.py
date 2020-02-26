@@ -30,18 +30,19 @@ class UserProfile(models.Model):
                 token = user_social.extra_data.get("access_token")
                 data = fetchdata(token)
 
-                profile = UserProfile.objects.filter(employee_id=data.get("employee_id").lower())[0]
-                if profile:
+                try:
+                    profile = UserProfile.objects.get(employee_id=data.get("employee_id").lower())
                     old_user = profile.user
                     profile.user = instance
                     profile.save()
                     old_user.delete()
                     return 0
 
-                profile = UserProfile()
-                profile.user = instance
-                profile.employee_id = data.get("employee_id").lower()
-                profile.save()
+                except Exception:
+                    profile = UserProfile()
+                    profile.user = instance
+                    profile.employee_id = data.get("employee_id").lower()
+                    profile.save()
 
             except ObjectDoesNotExist:
                 pass
