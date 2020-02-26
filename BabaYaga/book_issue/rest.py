@@ -29,10 +29,9 @@ class IssueBook(APIView):
             try:
                 profile = UserProfile.objects.get(employee_id=emp_id)
             except UserProfile.DoesNotExist:
-                email = request.data["email"]
-                username = email.split("@")[0]
+                email = request.data.get("email", emp_id)
                 user = User()
-                user.username = username
+                user.username = email
                 user.save()
                 profile = UserProfile()
                 profile.user = user
@@ -94,10 +93,9 @@ class ReturnBook(APIView):
             try:
                 profile = UserProfile.objects.get(employee_id=emp_id)
             except UserProfile.DoesNotExist:
-                email = request.data["email"]
-                username = email.split("@")[0]
+                email = request.data.get("email", emp_id)
                 user = User()
-                user.username = username
+                user.username = email
                 user.save()
                 profile = UserProfile()
                 profile.user = user
