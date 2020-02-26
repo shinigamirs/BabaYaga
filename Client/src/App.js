@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo512.png';
 import './App.css';
 
-import { ReadCard } from "./libs";
-import { fetchUserFromId, logoutUser } from "./services";
+import { ReadCard, ReadBarcode } from "./libs";
+import { fetchUserFromId, logoutUser, issueBook, returnBook } from "./services";
 
 const readCard = new ReadCard();
+const readBarcode = new ReadBarcode();
 
 function App() {
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
@@ -22,6 +23,39 @@ function App() {
 
     setAuthenticatedUser(result.user);
   }
+
+  async function startBarcodeScanning() {
+    setStatusText("scanning barcode");
+    const bookId = await readBarcode.read();
+    setStatusText(null);
+    return bookId;
+  }
+
+  async function startIssuingBook() {
+    const bookId = await startBarcodeScanning();
+
+    setStatusText("issuing book")
+    const result = await issueBook(authenticatedUser.id, bookId);
+    setAuthenticatedUser({
+      ...authenticatedUser,
+      issuedCount: result.issuedCount,
+    });
+    setStatusText(null);
+  }
+
+  async function startReturningBook() {
+    const bookId = await startBarcodeScanning();
+
+    setStatusText("returning book")
+    const result = await returnBook(authenticatedUser.id, bookId);
+    setAuthenticatedUser({
+      ...authenticatedUser,
+      issuedCount: result.issuedCount,
+    });
+
+    setStatusText(null);
+  }
+
 
   async function logout() {
     setStatusText("logging out")
@@ -60,14 +94,35 @@ function App() {
         {
           !statusText && authenticatedUser && <>
             <p>Hi, {authenticatedUser.name}</p>
-            <a
-              className="App-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={logout}
-            >
-              logout
-            </a>
+            <div>You have {authenticatedUser.issuedCount} books on you :)</div>
+            <p>
+              <a
+                className="App-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={startIssuingBook}
+              >
+                issue book
+              </a>
+              &nbsp;-&nbsp;
+              <a
+                className="App-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={startReturningBook}
+              >
+                return book
+              </a>
+              &nbsp;-&nbsp;
+              <a
+                className="App-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={logout}
+              >
+                logout
+              </a>
+            </p>
           </>
         }
       </header>
