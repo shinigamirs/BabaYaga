@@ -1,0 +1,26 @@
+#!/bin/bash
+
+NAME="BabaYaga"
+DJANGODIR=/opt/BabaYaga/BabaYaga/
+USER=babayaga
+GROUP=babayaga
+WORKERS=3
+BIND=unix:/opt/BabaYaga/run/gunicorn.sock
+DJANGO_SETTINGS_MODULE=BabaYaga.settings
+DJANGO_WSGI_MODULE=BabaYaga.wsgi
+LOGLEVEL=error
+
+cd $DJANGODIR
+source /opt/BabaYaga/babayaga/bin/activate
+
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+exec /opt/BabaYaga/babayaga/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
+  --name $NAME \
+  --workers $WORKERS \
+  --user=$USER \
+  --group=$GROUP \
+  --bind=$BIND \
+  --log-level=$LOGLEVEL \
+  --log-file=-

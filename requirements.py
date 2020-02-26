@@ -9,4 +9,4 @@ docutils
 pygments
 buttons
 social-auth-app-django
-psycopg2
+

@@ -25,7 +25,7 @@ SECRET_KEY = 'p8^84!$^td5@uaer8!xc7opb%-a(i0ylwf*_q-!6ph+wb$gm__'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['babayaga.corp.coriolis.in',  '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [ '127.0.0.1', 'localhost', '172.25.10.158', 'babayaga.esec.coriolis.in']
 
 
 # Application definition
@@ -142,4 +142,6 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+
 
