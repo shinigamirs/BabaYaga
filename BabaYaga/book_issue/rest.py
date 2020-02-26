@@ -11,9 +11,11 @@ from book_issue.serializers import *
 from django.http import Http404
 from userprofile import *
 from library.rest import BookAddIsbn
+from lib.decorator import rest_process_exception
 
 class IssueBook(APIView):
 
+    @rest_process_exception
     def post(self,request,):
         try:
             data = request.data

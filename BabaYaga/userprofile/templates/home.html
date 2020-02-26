@@ -21,7 +21,7 @@
                     <tbody>
                     {% for book in books %}
                         <tr>
-                            <td>{{ book.title }}</td>
+                            <td>{{ book.book.title }}</td>
                             <td>{{ book.issue_date }}</td>
                             <td>{{ book.return_date }}</td>
                             <td><i class="fa fa-inr"></i> {{book.fine_amount}}</td>
