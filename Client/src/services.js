@@ -1,14 +1,14 @@
 export async function fetchUserFromId(userId) {
-  const response = await fetch("https://babayaga.free.beeceptor.com/auth", {
-    method: "POST",
+  const response = await fetch("https://babayaga.corp.coriolis.in:8086/" + userId, {
+    method: "GET",
     mode: "cors",
     headers: {
       "Content-Type": "application/json",
       accept: "application/json"
     },
-    body: JSON.stringify({
-      id: userId,
-    }),
+//    body: JSON.stringify({
+//      id: userId,
+//    }),
   });
 
   return response.json();
@@ -16,7 +16,7 @@ export async function fetchUserFromId(userId) {
 
 
 export async function logoutUser(userId) {
-  const response = await fetch("https://babayaga.free.beeceptor.com/unauth", {
+  const response = await fetch("https://babayaga.corp.coriolis.in:8086/unauth", {
     method: "POST",
     mode: "cors",
     headers: {
@@ -32,7 +32,7 @@ export async function logoutUser(userId) {
 }
 
 export async function issueBook(userId, bookId) {
-  const response = await fetch("https://babayaga.free.beeceptor.com/issue", {
+  const response = await fetch("https://babayaga.corp.coriolis.in:8086/issue", {
     method: "POST",
     mode: "cors",
     headers: {
@@ -40,8 +40,8 @@ export async function issueBook(userId, bookId) {
       accept: "application/json"
     },
     body: JSON.stringify({
-      userId,
-      bookId,
+      emp_id: userId,
+      isbn: bookId,
     }),
   });
 
@@ -49,7 +49,7 @@ export async function issueBook(userId, bookId) {
 }
 
 export async function returnBook(userId, bookId) {
-  const response = await fetch("https://babayaga.free.beeceptor.com/return", {
+  const response = await fetch("https://babayaga.corp.coriolis.in:8086/return", {
     method: "POST",
     mode: "cors",
     headers: {
@@ -57,8 +57,8 @@ export async function returnBook(userId, bookId) {
       accept: "application/json"
     },
     body: JSON.stringify({
-      userId,
-      bookId,
+      emp_id: userId,
+      isbn: bookId,
     }),
   });
 

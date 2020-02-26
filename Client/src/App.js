@@ -21,7 +21,7 @@ function App() {
     const result = await fetchUserFromId(userId);
     setStatusText(null);
 
-    setAuthenticatedUser(result.user);
+    setAuthenticatedUser(result.employee_id);
   }
 
   async function startBarcodeScanning() {
